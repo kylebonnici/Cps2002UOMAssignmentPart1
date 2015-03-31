@@ -4,5 +4,6 @@
 public class TestApp {
     public static void main (String args[]){
         System.out.println(":) --> MT 03 !! :D");
+        System.out.println(" Virago is nice too  :) ");
     }
 }
