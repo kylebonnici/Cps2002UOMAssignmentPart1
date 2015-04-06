@@ -36,8 +36,8 @@ public class Account {
         if (accountBalance + amount >= 0){
             this.accountBalance += amount;
             return true;
+        }else {
+            return false;
         }
-
-        return false;
     }
 }
