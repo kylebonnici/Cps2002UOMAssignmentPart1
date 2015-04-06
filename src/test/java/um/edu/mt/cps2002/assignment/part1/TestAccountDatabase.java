@@ -30,7 +30,7 @@ public class TestAccountDatabase {
 
         for (int loops = 0; loops < qty; loops++) {
             accDb.createNewAccount(loops);
-            Assert.assertEquals(loops, accDb.getSize());
+            Assert.assertEquals(loops + 1, accDb.getSize());
         }
 
         for (int loops = 0; loops < qty; loops++) {

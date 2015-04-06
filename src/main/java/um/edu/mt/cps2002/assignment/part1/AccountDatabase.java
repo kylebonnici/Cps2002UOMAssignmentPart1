@@ -26,7 +26,7 @@ public class AccountDatabase {
     }
 
     public boolean createNewAccount( int accountNumber, String name){
-        if (getAccount(accountNumber) == null)
+        if (getAccount(accountNumber) != null)
             return false;
         else{
             Account newAcc = new Account(accountNumber);
