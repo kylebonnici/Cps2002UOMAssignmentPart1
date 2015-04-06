@@ -6,7 +6,7 @@ public class AccountDatabase {
     public int getSize() { return 1; }
 
     public Account getAccount(int AccountNumber){
-        Account acc = new Account();
+        Account acc = new Account(0);
 
         return acc;
     }
