@@ -10,16 +10,16 @@ import static org.junit.Assert.assertEquals;
 
 
 public class TestApp {
-    TestClass c;
+    AccountDatabase acc;
 
     @Before
     public void reGenerateCalcInstance(){
-        c = new TestClass();
+        acc = new AccountDatabase();
     }
 
     @Test
-    public void testAdd(){
-        String ans = c.sayHello();
+    public void testCreatNewAccount(){
+        String ans = acc.sayHello();
         assertEquals("Hello",ans);
     }
 

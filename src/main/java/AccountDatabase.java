@@ -3,9 +3,7 @@
  */
 public class AccountDatabase {
 
-    public int getSize(){
-        return 1;
-    }
+    public int getSize() { return 1; }
 
     public Account getAccount(int AccountNumber){
         Account acc = new Account();
