@@ -7,6 +7,11 @@ public class Account {
     public String accountName ;
     public long accountBalance;
 
+    public Account (int accountNumber){
+        this.accountNumber = accountNumber;
+        accountBalance = 0;
+    }
+
     public int getAccountNumber() {
         return accountNumber;
     }
@@ -17,6 +22,7 @@ public class Account {
     }
 
     public void setAccountName(String accountName) {
+
         this.accountName = accountName;
     }
 
@@ -24,11 +30,8 @@ public class Account {
         return accountBalance;
     }
 
-    public void setAccountBalance(long accountBalance) {
-        this.accountBalance = accountBalance;
-    }
-
     public boolean adjustBalance(long ammount) {
+
         return true;
     }
 }
