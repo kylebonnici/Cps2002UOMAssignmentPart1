@@ -21,15 +21,16 @@ public class Transaction extends AccountDatabase {
         Account accSrc = this.getAccount(sourceAccountNumber);
         Account accDst = this.getAccount(destinationAccountNumber);
 
-        Long srcTime = lastTransectionTime.get(new Integer(accSrc.getAccountNumber()));
-        Long dstTime = lastTransectionTime.get(new Integer(accDst.getAccountNumber()));
+        if (accSrc != null && accDst != null) {
 
-        if (srcTime != null && srcTime.longValue() + 15000  > System.currentTimeMillis()){
-            return false;
-        }else if (dstTime != null && dstTime.longValue() + 15000  > System.currentTimeMillis()){
-            return false;
-        }else {
-            if (accSrc != null && accDst != null) {
+            Long srcTime = lastTransectionTime.get(new Integer(accSrc.getAccountNumber()));
+            Long dstTime = lastTransectionTime.get(new Integer(accDst.getAccountNumber()));
+
+            if (srcTime != null && srcTime.longValue() + 15000 > System.currentTimeMillis()) {
+                return false;
+            } else if (dstTime != null && dstTime.longValue() + 15000 > System.currentTimeMillis()) {
+                return false;
+            } else {
                 if (accSrc.adjustBalance(-amount)) {
                     if (accDst.adjustBalance(amount)) {
 
@@ -44,9 +45,9 @@ public class Transaction extends AccountDatabase {
                 } else {
                     return false;
                 }
-            } else {
-                return false;
             }
+        }else{
+            return false;
         }
     }
 }

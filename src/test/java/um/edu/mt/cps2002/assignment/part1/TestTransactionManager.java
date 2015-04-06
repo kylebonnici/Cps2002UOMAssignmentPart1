@@ -22,7 +22,7 @@ public class TestTransactionManager {
         }
 
 
-        Assert.assertEquals(false, tran.processTransaction(1,2,500)); //fail
+        Assert.assertEquals(false, tran.processTransaction(1, 2, 500)); //fail
         Assert.assertEquals(0, tran.getAccount(1).getAccountBalance());
         Assert.assertEquals(1000, tran.getAccount(2).getAccountBalance());
 
@@ -30,9 +30,33 @@ public class TestTransactionManager {
         Assert.assertEquals(500, tran.getAccount(1).getAccountBalance());
         Assert.assertEquals(500, tran.getAccount(2).getAccountBalance());
 
+        long time = System.currentTimeMillis();
+
+        while (System.currentTimeMillis() - time <= 14950){
+            Assert.assertEquals(false, tran.processTransaction(1, 2, 500)); //fail time
+            Assert.assertEquals(500, tran.getAccount(1).getAccountBalance());
+            Assert.assertEquals(500, tran.getAccount(2).getAccountBalance());
+        }
+
+        while (System.currentTimeMillis() - time <= 15050){
+
+        }
+
         Assert.assertEquals(true, tran.processTransaction(1, 2, 500)); //succ 2 -->1000 1-->0
         Assert.assertEquals(0, tran.getAccount(1).getAccountBalance());
         Assert.assertEquals(1000, tran.getAccount(2).getAccountBalance());
+
+        time = System.currentTimeMillis();
+
+        while (System.currentTimeMillis() - time <= 14950){
+            Assert.assertEquals(false, tran.processTransaction(2, 1, 1001)); //fail time
+            Assert.assertEquals(0, tran.getAccount(1).getAccountBalance());
+            Assert.assertEquals(1000, tran.getAccount(2).getAccountBalance());
+        }
+
+        while (System.currentTimeMillis() - time <= 15050){
+
+        }
 
         Assert.assertEquals(false, tran.processTransaction(2, 1, 1001)); //fail
         Assert.assertEquals(0, tran.getAccount(1).getAccountBalance());
@@ -42,6 +66,18 @@ public class TestTransactionManager {
         Assert.assertEquals(100, tran.getAccount(1).getAccountBalance());
         Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
 
+        time = System.currentTimeMillis();
+
+        while (System.currentTimeMillis() - time <= 14950){
+            Assert.assertEquals(false, tran.processTransaction(2, 1, -101)); //fail time
+            Assert.assertEquals(100, tran.getAccount(1).getAccountBalance());
+            Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
+        }
+
+        while (System.currentTimeMillis() - time <= 15050){
+
+        }
+
         Assert.assertEquals(false, tran.processTransaction(2, 1, -101)); //fail
         Assert.assertEquals(100, tran.getAccount(1).getAccountBalance());
         Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
@@ -50,9 +86,32 @@ public class TestTransactionManager {
         Assert.assertEquals(0, tran.getAccount(1).getAccountBalance());
         Assert.assertEquals(1000, tran.getAccount(2).getAccountBalance());
 
+        time = System.currentTimeMillis();
+
+        while (System.currentTimeMillis() - time <= 14950){
+            Assert.assertEquals(false, tran.processTransaction(1, 2, -100)); //fail time
+            Assert.assertEquals(0, tran.getAccount(1).getAccountBalance());
+            Assert.assertEquals(1000, tran.getAccount(2).getAccountBalance());
+        }
+
+        while (System.currentTimeMillis() - time <= 15050){
+
+        }
+
         Assert.assertEquals(true, tran.processTransaction(1, 2, -100)); //succ 2 -->900 1-->100
         Assert.assertEquals(100, tran.getAccount(1).getAccountBalance());
         Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
+
+        time = System.currentTimeMillis();
+
+        while (System.currentTimeMillis() - time <= 14950){
+            Assert.assertEquals(false, tran.processTransaction(2, 3, 200)); //fail time
+            Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
+        }
+
+        while (System.currentTimeMillis() - time <= 15050){
+
+        }
 
         Assert.assertEquals(false, tran.processTransaction(2, 3, 200)); //fail
         Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
