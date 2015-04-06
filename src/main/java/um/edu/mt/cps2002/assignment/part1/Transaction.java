@@ -26,11 +26,9 @@ public class Transaction extends AccountDatabase {
             Long srcTime = lastTransectionTime.get(new Integer(accSrc.getAccountNumber()));
             Long dstTime = lastTransectionTime.get(new Integer(accDst.getAccountNumber()));
 
-            if (srcTime != null && srcTime.longValue() + 15000 > System.currentTimeMillis()) {
+            if (srcTime != null && srcTime.longValue() + 15000 > System.currentTimeMillis() || dstTime != null && dstTime.longValue() + 15000 > System.currentTimeMillis()) {
                 return false;
-            } else if (dstTime != null && dstTime.longValue() + 15000 > System.currentTimeMillis()) {
-                return false;
-            } else {
+            }else {
                 if (accSrc.adjustBalance(-amount)) {
                     if (accDst.adjustBalance(amount)) {
 
