@@ -1,3 +1,5 @@
+package um.edu.mt.cps2002.assignment.part1;
+
 /**
  * Created by Mark on 01/04/15.
  */
