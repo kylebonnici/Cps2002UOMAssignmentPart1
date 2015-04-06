@@ -54,7 +54,7 @@ public class TestAccount {
             boolean succ = acc.adjustBalance(amount);
 
             if (succ) {
-                Assert.assertEquals(amount, acc.getAccountBalance());
+                Assert.assertEquals(oldAccountBalance + amount, acc.getAccountBalance());
             } else {
                 Assert.assertEquals(oldAccountBalance, acc.getAccountBalance());
             }

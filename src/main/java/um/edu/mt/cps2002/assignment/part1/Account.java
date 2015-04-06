@@ -32,7 +32,12 @@ public class Account {
         return accountBalance;
     }
 
-    public boolean adjustBalance(long ammount) {
-        return true;
+    public boolean adjustBalance(long amount) {
+        if (accountBalance + amount >= 0){
+            this.accountBalance += amount;
+            return true;
+        }
+
+        return false;
     }
 }
