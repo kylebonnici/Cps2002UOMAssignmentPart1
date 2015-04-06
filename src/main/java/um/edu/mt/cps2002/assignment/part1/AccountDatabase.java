@@ -21,8 +21,8 @@ public class AccountDatabase {
         return 0;
     }
 
-    public void createNewAccount( int accountNumber){
-
+    public boolean createNewAccount( int accountNumber){
+        return true;
     }
 
 }
