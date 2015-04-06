@@ -9,11 +9,11 @@ public class AccountDatabase {
     private Map<Integer, Account> database;
 
     public AccountDatabase(){
-        Map<Integer, Account> database = new HashMap<Integer, Account>();
+        database = new HashMap<Integer, Account>();
     }
 
-    public Account getAccount(int AccountNumber){
-        return database.get(AccountNumber);
+    public Account getAccount(int accountNumber){
+        return database.get(new Integer(accountNumber));
     }
 
     public int getSize() {
@@ -31,6 +31,7 @@ public class AccountDatabase {
         else{
             Account newAcc = new Account(accountNumber);
             newAcc.setAccountName(name);
+            database.put(new Integer(accountNumber), newAcc);
             return true;
         }
     }
