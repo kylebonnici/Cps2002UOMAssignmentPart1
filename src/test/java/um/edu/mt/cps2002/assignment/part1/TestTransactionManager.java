@@ -15,7 +15,7 @@ public class TestTransactionManager {
     public void testProcessTransaction() {
         tran = new TransactionManager();
 
-        int qty = 2;
+        int qty = 4;
         for (int loops = 1; loops <= qty; loops++) {
             tran.createNewAccount(loops);
             if (loops%2 == 0) tran.getAccount(loops).adjustBalance(1000);
@@ -47,6 +47,10 @@ public class TestTransactionManager {
         Assert.assertEquals(1000, tran.getAccount(2).getAccountBalance());
 
         time = System.currentTimeMillis();
+
+        Assert.assertEquals(true, tran.processTransaction(4, 3, 500)); //succ 2 -->1000 1-->0
+        Assert.assertEquals(500, tran.getAccount(4).getAccountBalance());
+        Assert.assertEquals(500, tran.getAccount(3).getAccountBalance());
 
         while (System.currentTimeMillis() - time <= 14950){
             Assert.assertEquals(false, tran.processTransaction(2, 1, 1001)); //fail time
@@ -113,10 +117,10 @@ public class TestTransactionManager {
 
         }
 
-        Assert.assertEquals(false, tran.processTransaction(2, 3, 200)); //fail
+        Assert.assertEquals(false, tran.processTransaction(2, 5, 200)); //fail
         Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
 
-        Assert.assertEquals(false, tran.processTransaction(2, 3, -200)); //fail
+        Assert.assertEquals(false, tran.processTransaction(1, 5, -200)); //fail
         Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
 
     }
