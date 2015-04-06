@@ -1,33 +1,25 @@
-import org.junit.Before;
+package um.edu.mt.cps2002.assignment.part1;
+
+import org.junit.Assert;
 import org.junit.Test;
-
-import javax.security.auth.login.AccountNotFoundException;
-
 import static org.junit.Assert.*;
 
-import static org.junit.Assert.assertEquals;
+public class TestAccount {
 
-/**
- * Created by kylebonnici on 31/03/15.
- */
-
-
-public class TestApp {
-    AccountDatabase accDb;
     Account acc;
 
 
     @Test
     public void testCreatNewAccount(){
         acc = new Account(0);
-        assertEquals(0, acc.getAccountNumber());
+        Assert.assertEquals(0, acc.getAccountNumber());
     }
 
     @Test
     public void testAccountName(){
         acc = new Account(0);
         acc.setAccountName("Account0");
-        assertEquals("Account0", acc.getAccountName());
+        Assert.assertEquals("Account0", acc.getAccountName());
     }
 
     @Test
@@ -39,10 +31,9 @@ public class TestApp {
         boolean succ = acc.adjustBalance(2000);
 
         if (succ) {
-            assertEquals(2000, acc.getAccountBalance());
+            Assert.assertEquals(2000, acc.getAccountBalance());
         }else {
-            assertEquals(oldAccountBalance, acc.getAccountBalance());
+            Assert.assertEquals(oldAccountBalance, acc.getAccountBalance());
         }
     }
-
 }
