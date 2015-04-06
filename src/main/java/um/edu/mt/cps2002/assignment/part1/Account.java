@@ -33,7 +33,6 @@ public class Account {
     }
 
     public boolean adjustBalance(long ammount) {
-
         return true;
     }
 }
