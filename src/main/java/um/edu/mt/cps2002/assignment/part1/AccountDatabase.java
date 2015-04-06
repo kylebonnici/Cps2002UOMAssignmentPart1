@@ -6,23 +6,33 @@ import java.util.*;
 
 public class AccountDatabase {
 
-    private ArrayList<Account> database;
+    private Map<Integer, Account> database;
 
     public AccountDatabase(){
-        ArrayList<Account> database = new ArrayList<Account>();
+        Map<Integer, Account> database = new HashMap<Integer, Account>();
     }
 
     public Account getAccount(int AccountNumber){
-        Account acc = new Account(0);
-
-        return acc;
-    }
-    public int getSize(){
-        return 0;
+        return database.get(AccountNumber);
     }
 
-    public boolean createNewAccount( int accountNumber){
-        return true;
+    public int getSize() {
+        return database.size();
+    }
+
+
+    public boolean createNewAccount( int accountNumber) {
+         return  this.createNewAccount(accountNumber, "Account" + accountNumber);
+    }
+
+    public boolean createNewAccount( int accountNumber, String name){
+        if (getAccount(accountNumber) == null)
+            return false;
+        else{
+            Account newAcc = new Account(accountNumber);
+            newAcc.setAccountName(name);
+            return true;
+        }
     }
 
 }
