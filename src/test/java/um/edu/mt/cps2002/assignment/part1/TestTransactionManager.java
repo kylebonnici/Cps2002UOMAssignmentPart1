@@ -34,7 +34,7 @@ public class TestTransactionManager {
     }
 
     @Test
-    public void testTransferBetweenTwoAccounts(){
+    public void testTransferBetweenTwoAccounts1(){
         //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
         Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
         Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
@@ -42,43 +42,51 @@ public class TestTransactionManager {
     }
 
     @Test
+    public void testTransferBetweenTwoAccounts2(){
+        Assert.assertEquals(false, tran.processTransaction(2, 1, 3000));
+        Assert.assertEquals(0, tran.getAccountDatabase().getAccount(1).getAccountBalance());
+        Assert.assertEquals(1000, tran.getAccountDatabase().getAccount(2).getAccountBalance());
+    }
+
+    @Test
     public void testTransferBetween1UnkownAccounts1(){
-        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
         Assert.assertEquals(false, tran.processTransaction(2, qty + 1, 300));
         Assert.assertEquals(1000, tran.getAccountDatabase().getAccount(2).getAccountBalance());
     }
 
     @Test
     public void testTransferBetween1UnkownAccounts2(){
-        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
         Assert.assertEquals(false, tran.processTransaction(qty + 1, 2, 300));
         Assert.assertEquals(1000, tran.getAccountDatabase().getAccount(2).getAccountBalance());
     }
 
     @Test
     public void testTransferBetween2UnkownAccounts(){
-        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
         Assert.assertEquals(false, tran.processTransaction(qty + 2, qty + 1, 300));
     }
 
     @Test
     public void testTransferBetweenSameAccounts(){
-        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
         Assert.assertEquals(true, tran.processTransaction(2, 2, 300));
         Assert.assertEquals(1000, tran.getAccountDatabase().getAccount(2).getAccountBalance());
     }
 
     @Test
-    public void testTransferBetweenTwoAccountsInv(){
-        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
+    public void testTransferBetweenTwoAccountsInv1(){
         Assert.assertEquals(true, tran.processTransaction(1, 2, -300));
         Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
         Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
     }
 
     @Test
+    public void testTransferBetweenTwoAccountsInv2(){
+        Assert.assertEquals(false, tran.processTransaction(1, 2, -3000));
+        Assert.assertEquals(0, tran.getAccountDatabase().getAccount(1).getAccountBalance());
+        Assert.assertEquals(1000, tran.getAccountDatabase().getAccount(2).getAccountBalance());
+    }
+
+    @Test
     public void testTransferBetweenTwoAccountsInLessThen15Sec1(){
-        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
         Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
         Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
         Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
@@ -90,7 +98,6 @@ public class TestTransactionManager {
 
     @Test
     public void testTransferBetweenTwoAccountsInLessThen15Sec2(){
-        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
         Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
         Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
         Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
@@ -102,7 +109,6 @@ public class TestTransactionManager {
 
     @Test
     public void testTransferBetweenTwoAccountsInLessThen15Sec3(){
-        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
         Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
         Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
         Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
@@ -114,7 +120,6 @@ public class TestTransactionManager {
 
     @Test
     public void testTransferBetweenTwoAccountsAfter15Sec1(){
-        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
         Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
         Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
         Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
@@ -133,7 +138,6 @@ public class TestTransactionManager {
 
     @Test
     public void testTransferBetweenTwoAccountsAfter15Sec2(){
-        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
         Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
         Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
         Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
@@ -152,7 +156,6 @@ public class TestTransactionManager {
 
     @Test
     public void testTransferBetweenTwoAccountsAfter15Sec3(){
-        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
         Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
         Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
         Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
