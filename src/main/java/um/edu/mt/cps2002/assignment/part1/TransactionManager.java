@@ -12,6 +12,12 @@ public class TransactionManager extends Transaction{
         destinationAccountNumber = dst;
         this.amount = amount;
 
-        return this.process();
+        boolean succ = this.process();
+
+        if (succ){
+            numTransactionsProcessed++;
+        }
+
+        return succ;
     }
 }
