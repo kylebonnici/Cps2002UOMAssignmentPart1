@@ -42,6 +42,14 @@ public class TestTransactionManager {
     }
 
     @Test
+    public void testTransferBetweenTwoAccountsInv(){
+        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
+        Assert.assertEquals(true, tran.processTransaction(1, 2, -300));
+        Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
+        Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
+    }
+
+    @Test
     public void testTransferBetweenTwoAccountsInLessThen15Sec1(){
         //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
         Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
