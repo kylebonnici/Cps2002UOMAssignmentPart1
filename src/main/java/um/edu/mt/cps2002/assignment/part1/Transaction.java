@@ -16,6 +16,7 @@ public class Transaction {
 
     public Transaction(){
         lastTransectionTime = new HashMap<Integer,Long>();
+        db = new AccountDatabase();
     }
 
     public boolean process(){
