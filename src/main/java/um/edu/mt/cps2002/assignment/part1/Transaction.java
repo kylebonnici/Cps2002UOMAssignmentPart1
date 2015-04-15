@@ -6,20 +6,21 @@ import java.util.Map;
 /**
  * Created by Mark on 01/04/15.
  */
-public class Transaction extends AccountDatabase {
+public class Transaction {
 
     public int sourceAccountNumber;
     public int destinationAccountNumber;
     public long amount;
     private Map<Integer,Long> lastTransectionTime;
+    private AccountDatabase db;
 
     public Transaction(){
         lastTransectionTime = new HashMap<Integer,Long>();
     }
 
     public boolean process(){
-        Account accSrc = this.getAccount(sourceAccountNumber);
-        Account accDst = this.getAccount(destinationAccountNumber);
+        Account accSrc = this.getAccountDatabase().getAccount(sourceAccountNumber);
+        Account accDst = this.getAccountDatabase().getAccount(destinationAccountNumber);
 
         if (accSrc != null && accDst != null) {
 
@@ -47,5 +48,9 @@ public class Transaction extends AccountDatabase {
         }else{
             return false;
         }
+    }
+
+    public AccountDatabase getAccountDatabase(){
+        return db;
     }
 }

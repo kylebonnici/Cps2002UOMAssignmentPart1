@@ -1,6 +1,7 @@
 package um.edu.mt.cps2002.assignment.part1;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -10,118 +11,126 @@ import org.junit.Test;
 public class TestTransactionManager {
 
     TransactionManager tran ;
+    private int qty = 1000;
+
+    @Before
+    public void createNewTransectionManager(){
+        tran = new TransactionManager();
+        //Create qty account each even account id hase a balance of 1000;
+        for (int loops = 1; loops <= qty; loops++) {
+            tran.getAccountDatabase().createNewAccount(loops);
+            if (loops%2 == 0) tran.getAccountDatabase().getAccount(loops).adjustBalance(1000);
+        }
+    }
 
     @Test
-    public void testProcessTransaction() {
-        tran = new TransactionManager();
-
-        int qty = 4;
-        for (int loops = 1; loops <= qty; loops++) {
-            tran.createNewAccount(loops);
-            if (loops%2 == 0) tran.getAccount(loops).adjustBalance(1000);
+    public void testNumberOfTansectionsProsessed(){
+        //only half should be succsesfull thus no of transections should be qty/2
+        for (int loops = 1 ; loops <= 1000; loops ++){
+            tran.processTransaction(loops + 1, loops, 100);
         }
 
+        Assert.assertEquals(qty/2, tran.numTransactionsProcessed);
+    }
 
-        Assert.assertEquals(false, tran.processTransaction(1, 2, 500)); //fail
-        Assert.assertEquals(0, tran.getAccount(1).getAccountBalance());
-        Assert.assertEquals(1000, tran.getAccount(2).getAccountBalance());
+    @Test
+    public void testTransferBetweenTwoAccounts(){
+        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
+        Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
+        Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
+        Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
+    }
 
-        Assert.assertEquals(true, tran.processTransaction(2, 1, 500)); // succ 2--> 500 1-->500
-        Assert.assertEquals(500, tran.getAccount(1).getAccountBalance());
-        Assert.assertEquals(500, tran.getAccount(2).getAccountBalance());
+    @Test
+    public void testTransferBetweenTwoAccountsInLessThen15Sec1(){
+        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
+        Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
+        Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
+        Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
+
+        Assert.assertEquals(false, tran.processTransaction(1, 2, 300));
+        Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
+        Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
+    }
+
+    @Test
+    public void testTransferBetweenTwoAccountsInLessThen15Sec2(){
+        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
+        Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
+        Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
+        Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
+
+        Assert.assertEquals(false, tran.processTransaction(2, 3, 300));
+        Assert.assertEquals(0, tran.getAccountDatabase().getAccount(3).getAccountBalance());
+        Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
+    }
+
+    @Test
+    public void testTransferBetweenTwoAccountsInLessThen15Sec3(){
+        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
+        Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
+        Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
+        Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
+
+        Assert.assertEquals(false, tran.processTransaction(1, 3, 300));
+        Assert.assertEquals(0, tran.getAccountDatabase().getAccount(3).getAccountBalance());
+        Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
+    }
+
+    @Test
+    public void testTransferBetweenTwoAccountsAfter15Sec1(){
+        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
+        Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
+        Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
+        Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
 
         long time = System.currentTimeMillis();
 
-        while (System.currentTimeMillis() - time <= 14950){
-            Assert.assertEquals(false, tran.processTransaction(1, 2, 500)); //fail time
-            Assert.assertEquals(500, tran.getAccount(1).getAccountBalance());
-            Assert.assertEquals(500, tran.getAccount(2).getAccountBalance());
-        }
-
+        //wait 15 seconds
         while (System.currentTimeMillis() - time <= 15050){
 
         }
 
-        Assert.assertEquals(true, tran.processTransaction(1, 2, 500)); //succ 2 -->1000 1-->0
-        Assert.assertEquals(0, tran.getAccount(1).getAccountBalance());
-        Assert.assertEquals(1000, tran.getAccount(2).getAccountBalance());
+        Assert.assertEquals(true, tran.processTransaction(1, 2, 300));
+        Assert.assertEquals(0, tran.getAccountDatabase().getAccount(1).getAccountBalance());
+        Assert.assertEquals(1000, tran.getAccountDatabase().getAccount(2).getAccountBalance());
+    }
 
-        time = System.currentTimeMillis();
+    @Test
+    public void testTransferBetweenTwoAccountsAfter15Sec2(){
+        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
+        Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
+        Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
+        Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
 
-        Assert.assertEquals(true, tran.processTransaction(4, 3, 500)); //succ 2 -->1000 1-->0
-        Assert.assertEquals(500, tran.getAccount(4).getAccountBalance());
-        Assert.assertEquals(500, tran.getAccount(3).getAccountBalance());
+        long time = System.currentTimeMillis();
 
-        while (System.currentTimeMillis() - time <= 14950){
-            Assert.assertEquals(false, tran.processTransaction(2, 1, 1001)); //fail time
-            Assert.assertEquals(0, tran.getAccount(1).getAccountBalance());
-            Assert.assertEquals(1000, tran.getAccount(2).getAccountBalance());
-        }
-
+        //wait 15 seconds
         while (System.currentTimeMillis() - time <= 15050){
 
         }
 
-        Assert.assertEquals(false, tran.processTransaction(2, 1, 1001)); //fail
-        Assert.assertEquals(0, tran.getAccount(1).getAccountBalance());
-        Assert.assertEquals(1000, tran.getAccount(2).getAccountBalance());
+        Assert.assertEquals(true, tran.processTransaction(2, 3, 300));
+        Assert.assertEquals(300, tran.getAccountDatabase().getAccount(3).getAccountBalance());
+        Assert.assertEquals(400, tran.getAccountDatabase().getAccount(2).getAccountBalance());
+    }
 
-        Assert.assertEquals(true, tran.processTransaction(2, 1, 100)); //succ 2 --> 900 1-->100
-        Assert.assertEquals(100, tran.getAccount(1).getAccountBalance());
-        Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
+    @Test
+    public void testTransferBetweenTwoAccountsAfter15Sec3(){
+        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
+        Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
+        Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
+        Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
 
-        time = System.currentTimeMillis();
+        long time = System.currentTimeMillis();
 
-        while (System.currentTimeMillis() - time <= 14950){
-            Assert.assertEquals(false, tran.processTransaction(2, 1, -101)); //fail time
-            Assert.assertEquals(100, tran.getAccount(1).getAccountBalance());
-            Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
-        }
-
+        //wait 15 seconds
         while (System.currentTimeMillis() - time <= 15050){
 
         }
 
-        Assert.assertEquals(false, tran.processTransaction(2, 1, -101)); //fail
-        Assert.assertEquals(100, tran.getAccount(1).getAccountBalance());
-        Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
-
-        Assert.assertEquals(true, tran.processTransaction(2, 1, -100)); //succ 2 -->1000 1-->0
-        Assert.assertEquals(0, tran.getAccount(1).getAccountBalance());
-        Assert.assertEquals(1000, tran.getAccount(2).getAccountBalance());
-
-        time = System.currentTimeMillis();
-
-        while (System.currentTimeMillis() - time <= 14950){
-            Assert.assertEquals(false, tran.processTransaction(1, 2, -100)); //fail time
-            Assert.assertEquals(0, tran.getAccount(1).getAccountBalance());
-            Assert.assertEquals(1000, tran.getAccount(2).getAccountBalance());
-        }
-
-        while (System.currentTimeMillis() - time <= 15050){
-
-        }
-
-        Assert.assertEquals(true, tran.processTransaction(1, 2, -100)); //succ 2 -->900 1-->100
-        Assert.assertEquals(100, tran.getAccount(1).getAccountBalance());
-        Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
-
-        time = System.currentTimeMillis();
-
-        while (System.currentTimeMillis() - time <= 14950){
-            Assert.assertEquals(false, tran.processTransaction(2, 3, 200)); //fail time
-            Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
-        }
-
-        while (System.currentTimeMillis() - time <= 15050){
-
-        }
-
-        Assert.assertEquals(false, tran.processTransaction(2, 5, 200)); //fail
-        Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
-
-        Assert.assertEquals(false, tran.processTransaction(1, 5, -200)); //fail
-        Assert.assertEquals(900, tran.getAccount(2).getAccountBalance());
-
+        Assert.assertEquals(true, tran.processTransaction(1, 3, 300));
+        Assert.assertEquals(300, tran.getAccountDatabase().getAccount(3).getAccountBalance());
+        Assert.assertEquals(0, tran.getAccountDatabase().getAccount(1).getAccountBalance());
     }
 }
