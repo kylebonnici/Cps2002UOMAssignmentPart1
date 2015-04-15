@@ -1,6 +1,7 @@
 package um.edu.mt.cps2002.assignment.part1;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import java.util.Random;
 import static org.junit.Assert.*;
@@ -8,6 +9,7 @@ import static org.junit.Assert.*;
 public class TestAccount {
 
     Account acc;
+    int accNo;
 
     private int genRandInt(){
         Random rn = new Random();
@@ -23,41 +25,73 @@ public class TestAccount {
         return  min + i;
     }
 
+    @Before
+    public void createNewInstance(){
+        accNo =  this.genRandInt();
+        acc = new Account(accNo);
+    }
 
     @Test
     public void testCreatNewAccount(){
-        int accNo =  this.genRandInt();
-
-        acc = new Account(accNo);
         Assert.assertEquals(accNo, acc.getAccountNumber());
     }
 
     @Test
     public void testAccountName(){
-        acc = new Account(genRandInt());
-        int randNo = genRandInt();
-        acc.setAccountName("Account" +randNo );
-        Assert.assertEquals("Account" +randNo, acc.getAccountName());
+        acc.setAccountName("Account" +accNo );
+        Assert.assertEquals("Account" +accNo, acc.getAccountName());
     }
 
     @Test
-    public void testAccountBalance(){
-        acc = new Account(genRandInt());
+    public void testNewAccountBalance1(){
+        Assert.assertEquals(0, acc.getAccountBalance());
+    }
 
-        for (int loops = 0 ; loops < 10000; loops ++) {
-            long oldAccountBalance = acc.getAccountBalance();
+    @Test
+    public void testNewAccountBalance2(){
+        boolean succ = acc.adjustBalance(200);
 
-            long amount = this.genRandLong(-1000000, 100000);
+        Assert.assertEquals(true, succ);
+        Assert.assertEquals(200, acc.getAccountBalance());
+    }
 
-            long newAccountBalance = oldAccountBalance + amount;
+    @Test
+    public void testOverWithdraw1(){
+        acc.adjustBalance(1000); // set acc to 1000
 
-            boolean succ = acc.adjustBalance(amount);
+        boolean succ = acc.adjustBalance(-1001);
 
-            if (succ) {
-                Assert.assertEquals(oldAccountBalance + amount, acc.getAccountBalance());
-            } else {
-                Assert.assertEquals(oldAccountBalance, acc.getAccountBalance());
-            }
-        }
+        Assert.assertEquals(false, succ);
+        Assert.assertEquals(1000, acc.getAccountBalance());
+    }
+
+    @Test
+    public void testOverWithdraw2(){
+        acc.adjustBalance(1000); // set acc to 1000
+
+        boolean succ = acc.adjustBalance(-2000);
+
+        Assert.assertEquals(false, succ);
+        Assert.assertEquals(1000, acc.getAccountBalance());
+    }
+
+    @Test
+    public void testUnderWithdraw1(){
+        acc.adjustBalance(1000); // set acc to 1000
+
+        boolean succ = acc.adjustBalance(-1000);
+
+        Assert.assertEquals(true, succ);
+        Assert.assertEquals(0, acc.getAccountBalance());
+    }
+
+    @Test
+    public void testUnderWithdraw2(){
+        acc.adjustBalance(1000); // set acc to 1000
+
+        boolean succ = acc.adjustBalance(-999);
+
+        Assert.assertEquals(true, succ);
+        Assert.assertEquals(1,acc.getAccountBalance());
     }
 }
