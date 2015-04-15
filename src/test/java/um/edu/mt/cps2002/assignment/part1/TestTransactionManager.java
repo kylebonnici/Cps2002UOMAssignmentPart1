@@ -42,6 +42,33 @@ public class TestTransactionManager {
     }
 
     @Test
+    public void testTransferBetween1UnkownAccounts1(){
+        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
+        Assert.assertEquals(false, tran.processTransaction(2, qty + 1, 300));
+        Assert.assertEquals(1000, tran.getAccountDatabase().getAccount(2).getAccountBalance());
+    }
+
+    @Test
+    public void testTransferBetween1UnkownAccounts2(){
+        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
+        Assert.assertEquals(false, tran.processTransaction(qty + 1, 2, 300));
+        Assert.assertEquals(1000, tran.getAccountDatabase().getAccount(2).getAccountBalance());
+    }
+
+    @Test
+    public void testTransferBetween2UnkownAccounts(){
+        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
+        Assert.assertEquals(false, tran.processTransaction(qty + 2, qty + 1, 300));
+    }
+
+    @Test
+    public void testTransferBetweenSameAccounts(){
+        //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
+        Assert.assertEquals(true, tran.processTransaction(2, 2, 300));
+        Assert.assertEquals(1000, tran.getAccountDatabase().getAccount(2).getAccountBalance());
+    }
+
+    @Test
     public void testTransferBetweenTwoAccountsInv(){
         //Transfer money from acc 2 to acc 1 ballance in accounts should be 700 300 respectivly
         Assert.assertEquals(true, tran.processTransaction(1, 2, -300));
