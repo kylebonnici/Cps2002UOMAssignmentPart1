@@ -8,10 +8,20 @@ public class Account {
     public int accountNumber;
     public String accountName ;
     public long accountBalance;
+    private long lastTimeUsed;
 
-    public Account (int accountNumber){
+    public Account (int accountNumber, long accountBalance){
         this.accountNumber = accountNumber;
-        accountBalance = 0;
+        this.accountBalance = accountBalance;
+        setLastTimeUsed(System.currentTimeMillis() - 15000);
+    }
+
+    public long getLastTimeUsed() {
+        return lastTimeUsed;
+    }
+
+    public void setLastTimeUsed(long lastTimeUsed) {
+        this.lastTimeUsed = lastTimeUsed;
     }
 
     public int getAccountNumber() {
@@ -20,11 +30,9 @@ public class Account {
 
     public String getAccountName() {
         return accountName;
-
     }
 
     public void setAccountName(String accountName) {
-
         this.accountName = accountName;
     }
 

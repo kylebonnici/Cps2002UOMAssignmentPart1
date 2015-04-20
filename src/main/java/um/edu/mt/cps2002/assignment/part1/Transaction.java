@@ -8,50 +8,42 @@ import java.util.Map;
  */
 public class Transaction {
 
-    public int sourceAccountNumber;
-    public int destinationAccountNumber;
-    public long amount;
-    private Map<Integer,Long> lastTransectionTime;
-    private AccountDatabase db;
+    private int sourceAccountNumber;
+    private int destinationAccountNumber;
+    private long amount;
+    private Account srcAcc;
+    private Account dscAcc;
 
-    public Transaction(){
-        lastTransectionTime = new HashMap<Integer,Long>();
-        db = new AccountDatabase();
+    public Transaction(Account srcAcc, Account dscAcc, long amount){
+        this.srcAcc = srcAcc;
+        this.dscAcc = dscAcc;
+        this.sourceAccountNumber = srcAcc.getAccountNumber();
+        this.destinationAccountNumber = dscAcc.getAccountNumber();
+        this.amount = amount;
     }
 
     public boolean process(){
-        Account accSrc = this.getAccountDatabase().getAccount(sourceAccountNumber);
-        Account accDst = this.getAccountDatabase().getAccount(destinationAccountNumber);
+        long srcTime = srcAcc.getLastTimeUsed();
+        long dstTime = dscAcc.getLastTimeUsed();
 
-        if (accSrc != null && accDst != null) {
+        if (srcTime + 15000 > System.currentTimeMillis() || dstTime + 15000 > System.currentTimeMillis()) {
+            return false;
+        }else {
+            if (srcAcc.adjustBalance(-amount)) {
+                if (dscAcc.adjustBalance(amount)) {
 
-            Long srcTime = lastTransectionTime.get(new Integer(accSrc.getAccountNumber()));
-            Long dstTime = lastTransectionTime.get(new Integer(accDst.getAccountNumber()));
+                    srcAcc.setLastTimeUsed(System.currentTimeMillis());
+                    dscAcc.setLastTimeUsed(System.currentTimeMillis());
 
-            if (srcTime != null && srcTime.longValue() + 15000 > System.currentTimeMillis() || dstTime != null && dstTime.longValue() + 15000 > System.currentTimeMillis()) {
-                return false;
-            }else {
-                if (accSrc.adjustBalance(-amount)) {
-                    if (accDst.adjustBalance(amount)) {
-
-                        lastTransectionTime.put(new Integer(accSrc.getAccountNumber()), new Long(System.currentTimeMillis()));
-                        lastTransectionTime.put(new Integer(accDst.getAccountNumber()), new Long(System.currentTimeMillis()));
-
-                        return true;
-                    } else {
-                        accSrc.adjustBalance(amount);
-                        return false;
-                    }
+                    return true;
                 } else {
+                    srcAcc.adjustBalance(amount);
                     return false;
                 }
+            } else {
+                return false;
             }
-        }else{
-            return false;
         }
-    }
 
-    public AccountDatabase getAccountDatabase(){
-        return db;
     }
 }

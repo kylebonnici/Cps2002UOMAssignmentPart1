@@ -21,15 +21,15 @@ public class AccountDatabase {
     }
 
 
-    public boolean createNewAccount( int accountNumber) {
-         return  this.createNewAccount(accountNumber, "Account" + accountNumber);
+    public boolean createNewAccount(int accountNumber, long accountBalance) {
+         return  this.createNewAccount(accountNumber, "Account" + accountNumber, accountBalance);
     }
 
-    public boolean createNewAccount( int accountNumber, String name){
+    public boolean createNewAccount( int accountNumber, String name, long accountBalance){
         if (getAccount(accountNumber) != null)
             return false;
         else{
-            Account newAcc = new Account(accountNumber);
+            Account newAcc = new Account(accountNumber, accountBalance);
             newAcc.setAccountName(name);
             database.put(new Integer(accountNumber), newAcc);
             return true;

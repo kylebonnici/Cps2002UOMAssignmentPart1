@@ -24,7 +24,7 @@ public class TestAccountDatabase {
         //(outerLoops == 1) re create qry accounts with same is as before but since they already exist creation should NOT be succsessfull.
         for (int outerLoops = 0; outerLoops < 2; outerLoops++){
             for (int loops = 1; loops <= qty; loops++) {
-                boolean succ = accDb.createNewAccount(loops);
+                boolean succ = accDb.createNewAccount(loops, 0);
 
                 Assert.assertEquals(outerLoops==0, succ);
             }
@@ -37,13 +37,13 @@ public class TestAccountDatabase {
 
         //create qty accounts and check size after each new account
         for (int loops = 0; loops < qty; loops++) {
-            accDb.createNewAccount(loops);
+            accDb.createNewAccount(loops,0);
             Assert.assertEquals(loops + 1, accDb.getSize());
         }
 
         //re create accounts with the same acc number thus no new account should be creathed thus size shuld still be == to qty
         for (int loops = 0; loops < qty; loops++) {
-            accDb.createNewAccount(loops);
+            accDb.createNewAccount(loops,0);
             Assert.assertEquals(qty, accDb.getSize());
         }
 
@@ -63,7 +63,7 @@ public class TestAccountDatabase {
 
                 Assert.assertEquals(outerLoops != 0 , found);
 
-                if (outerLoops == 0) accDb.createNewAccount(loops);
+                if (outerLoops == 0) accDb.createNewAccount(loops,0);
             }
         }
     }

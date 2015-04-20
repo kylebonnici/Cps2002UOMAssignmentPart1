@@ -28,11 +28,11 @@ public class TestAccount {
     @Before
     public void createNewInstance(){
         accNo =  this.genRandInt();
-        acc = new Account(accNo);
+        acc = new Account(accNo, 0);
     }
 
     @Test
-    public void testCreatNewAccount(){
+    public void testCreateNewAccount(){
         Assert.assertEquals(accNo, acc.getAccountNumber());
     }
 
