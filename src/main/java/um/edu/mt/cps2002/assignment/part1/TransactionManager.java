@@ -11,7 +11,7 @@ public class TransactionManager{
 
     private Map<Integer,Long> lastTransectionTime;
     private AccountDatabase db;
-    private ArrayList<Transaction> tranList;
+    private ArrayList<AbstractTransaction> tranList;
 
     public int getNumTransactionsProcessed() {
         return numTransactionsProcessed;
@@ -20,7 +20,7 @@ public class TransactionManager{
     public TransactionManager(){
         lastTransectionTime = new HashMap<Integer,Long>();
         db = new AccountDatabase();
-        tranList = new ArrayList<Transaction>();
+        tranList = new ArrayList<AbstractTransaction>();
     }
 
     private int numTransactionsProcessed;
@@ -38,9 +38,24 @@ public class TransactionManager{
             succ = tran.process();
 
             if (succ) {
+                tran.updateTime();
                 tranList.add(tran);
                 numTransactionsProcessed++;
             }
+        }
+
+        return succ;
+    }
+
+    public boolean processTransaction(CompoundTransaction compoundTransaction){
+        boolean succ = false;
+
+        succ = compoundTransaction.process();
+
+        if (succ) {
+            compoundTransaction.updateTime();
+            tranList.add(compoundTransaction);
+            numTransactionsProcessed++;
         }
 
         return succ;

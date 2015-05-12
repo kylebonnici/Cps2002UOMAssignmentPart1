@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by Mark on 01/04/15.
  */
-public class Transaction {
+public class Transaction extends AbstractTransaction {
 
     private int sourceAccountNumber;
     private int destinationAccountNumber;
@@ -23,27 +23,46 @@ public class Transaction {
     }
 
     public boolean process(){
+        if (check()) {
+            srcAcc.adjustBalance(-amount);
+            dscAcc.adjustBalance(amount);
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean check(){
+        if (!checkFailOnTime() && !checkFailOnSrc() && !checkFailOnDst()) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public boolean checkFailOnTime(){ //true ok false fail
         long srcTime = srcAcc.getLastTimeUsed();
         long dstTime = dscAcc.getLastTimeUsed();
 
-        if (srcTime + 15000 > System.currentTimeMillis() || dstTime + 15000 > System.currentTimeMillis()) {
-            return false;
-        }else {
-            if (srcAcc.adjustBalance(-amount)) {
-                if (dscAcc.adjustBalance(amount)) {
+        return (srcTime + 15000 > System.currentTimeMillis() || dstTime + 15000 > System.currentTimeMillis());
+    }
 
-                    srcAcc.setLastTimeUsed(System.currentTimeMillis());
-                    dscAcc.setLastTimeUsed(System.currentTimeMillis());
+    private boolean checkFailOnSrc(){
+        return !srcAcc.checkAdjustBalance(-amount);
+    }
 
-                    return true;
-                } else {
-                    srcAcc.adjustBalance(amount);
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
+    private boolean checkFailOnDst(){
+        return !dscAcc.checkAdjustBalance(amount);
+    }
 
+    public void updateTime(){
+        srcAcc.setLastTimeUsed(System.currentTimeMillis());
+        dscAcc.setLastTimeUsed(System.currentTimeMillis());
+    }
+
+    public void rollback() {
+        srcAcc.adjustBalance(amount);
+        dscAcc.adjustBalance(-amount);
     }
 }

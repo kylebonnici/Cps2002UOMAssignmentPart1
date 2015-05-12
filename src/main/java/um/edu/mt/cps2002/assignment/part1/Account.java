@@ -41,8 +41,16 @@ public class Account {
     }
 
     public boolean adjustBalance(long amount) {
-        if (accountBalance + amount >= 0){
+        if (checkAdjustBalance(amount)){
             this.accountBalance += amount;
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public boolean checkAdjustBalance(long amount) {
+        if (accountBalance + amount >= 0){
             return true;
         }else {
             return false;
