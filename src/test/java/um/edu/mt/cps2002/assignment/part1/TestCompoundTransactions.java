@@ -13,6 +13,14 @@ public class TestCompoundTransactions {
     TransactionManager tran ;
     int startAmount = 1000;
 
+    private void wait15Sec(){
+        try {
+            Thread.sleep(15001);
+        }catch(java.lang.InterruptedException e){
+
+        }
+    }
+
     @Before
     public void createNewTransactionManager(){
         tran = new TransactionManager();
@@ -49,7 +57,7 @@ public class TestCompoundTransactions {
         ctPayFees.addChildTransaction(trPayLegalFees);
         ctPayFees.addChildTransaction(trPayTaxes);
 
-        Assert.assertEquals(true, ctBuyProperty.process());
+        Assert.assertEquals(true, tran.processTransaction(ctBuyProperty));
 
         Assert.assertEquals(startAmount - amount, tran.getAccountDatabase().getAccount(1234).getAccountBalance());
         Assert.assertEquals(startAmount + amount, tran.getAccountDatabase().getAccount(6781).getAccountBalance());
@@ -86,7 +94,7 @@ public class TestCompoundTransactions {
         ctPayFees.addChildTransaction(trPayLegalFees);
         ctPayFees.addChildTransaction(trPayTaxes);
 
-        Assert.assertEquals(true, ctBuyProperty.process());
+        Assert.assertEquals(true, tran.processTransaction(ctBuyProperty));
 
         Assert.assertEquals(startAmount - amount, tran.getAccountDatabase().getAccount(1234).getAccountBalance());
         Assert.assertEquals(startAmount + amount, tran.getAccountDatabase().getAccount(6781).getAccountBalance());
@@ -121,7 +129,7 @@ public class TestCompoundTransactions {
         ctPayFees.addChildTransaction(trPayLegalFees);
         ctPayFees.addChildTransaction(trPayTaxes);
 
-        Assert.assertEquals(false, ctBuyProperty.process());
+        Assert.assertEquals(false, tran.processTransaction(ctBuyProperty));
 
         Assert.assertEquals(startAmount, tran.getAccountDatabase().getAccount(1234).getAccountBalance());
         Assert.assertEquals(startAmount, tran.getAccountDatabase().getAccount(6781).getAccountBalance());
@@ -158,7 +166,7 @@ public class TestCompoundTransactions {
         ctPayFees.addChildTransaction(trPayLegalFees);
         ctPayFees.addChildTransaction(trPayTaxes);
 
-        Assert.assertEquals(false, ctBuyProperty.process());
+        Assert.assertEquals(false, tran.processTransaction(ctBuyProperty));
 
         Assert.assertEquals(0, tran.getAccountDatabase().getAccount(1234).getAccountBalance());
         Assert.assertEquals(startAmount, tran.getAccountDatabase().getAccount(6781).getAccountBalance());
