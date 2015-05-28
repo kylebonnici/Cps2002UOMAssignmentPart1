@@ -65,4 +65,16 @@ public class Transaction extends AbstractTransaction {
         srcAcc.adjustBalance(amount);
         dscAcc.adjustBalance(-amount);
     }
+
+    public int getSourceAccountNumber(){
+        return sourceAccountNumber;
+    }
+
+    public int getDestinationAccountNumber(){
+        return destinationAccountNumber;
+    }
+
+    public long getAmount(){
+        return amount;
+    }
 }

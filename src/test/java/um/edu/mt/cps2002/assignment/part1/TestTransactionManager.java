@@ -153,16 +153,4 @@ public class TestTransactionManager {
         Assert.assertEquals(400, tran.getAccountDatabase().getAccount(2).getAccountBalance());
     }
 
-    @Test
-    public void testTransferBetweenTwoAccountsAfter15Sec3(){
-        Assert.assertEquals(true, tran.processTransaction(2, 1, 300));
-        Assert.assertEquals(300, tran.getAccountDatabase().getAccount(1).getAccountBalance());
-        Assert.assertEquals(700, tran.getAccountDatabase().getAccount(2).getAccountBalance());
-
-        wait15Sec();
-
-        Assert.assertEquals(true, tran.processTransaction(1, 3, 300));
-        Assert.assertEquals(300, tran.getAccountDatabase().getAccount(3).getAccountBalance());
-        Assert.assertEquals(0, tran.getAccountDatabase().getAccount(1).getAccountBalance());
-    }
 }

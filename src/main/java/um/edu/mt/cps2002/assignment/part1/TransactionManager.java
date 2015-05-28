@@ -64,5 +64,11 @@ public class TransactionManager{
     public AccountDatabase getAccountDatabase(){
         return db;
     }
+
+    public CompoundTransaction createNewTypicalCompoundTransaction(Risk risk ,int dstPayDeposit, long depositAmount, int[] dstMainTransaction, long[] mainAmount){
+        CompoundTransaction root = new CompoundTransaction();
+
+        return root;
+    }
     
 }
