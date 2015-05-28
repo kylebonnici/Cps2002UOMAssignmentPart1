@@ -79,6 +79,24 @@ public class CompoundTransaction extends AbstractTransaction {
         childTransaction.add(transaction);
     }
 
+    public ArrayList<Transaction> getFilteredTransactions(int srcAcc){
+        ArrayList<Transaction> out = new ArrayList<Transaction>();
+
+        return out;
+    }
+
+    public ArrayList<Transaction> getTransactionsInAscending(){
+        ArrayList<Transaction> out = new ArrayList<Transaction>();
+
+
+        return out;
+    }
+
+    public ArrayList<Transaction> getTransactionsInDescending(){
+        ArrayList<Transaction> out = getTransactionsInAscending();
+        
+        return out;
+    }
 }
 
 
